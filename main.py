@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 
 class Sudoku_grid:
@@ -40,14 +41,42 @@ class Sudoku_grid:
 
         return True
 
-    def make_exercise(self):
-        pass
+    def solve(self, row=0, col=0):
+        if col == 9:
+            if row == 8:
+                return True
+            row += 1
+            col = 0
+
+        if self.grid[row][col] > 0:
+            return self.solve(row, col + 1)
+
+        for num in range(1, 10):
+            if self.is_valid_move(row, col, num):
+                self.grid[row][col] = num
+
+                if self.solve(row, col + 1):
+                    return True
+
+            self.grid[row][col] = 0
+
+        return False
+
+    def make_exercise(self, num_empty_cells=20):
+        # First, generate a solved Sudoku grid
+        self.generate()
+        while not self.solve():
+            self.generate()
+
+        # Then, remove some numbers from the grid
+        for _ in range(num_empty_cells):
+            row, col = random.randint(0, 8), random.randint(0, 8)
+            self.grid[row, col] = 0
 
 
 # Example of a grid
 sudoku = Sudoku_grid()
-sudoku.generate()
+sudoku.make_exercise()
 sudoku.print_grid()
-sudoku.assign_value(0, 0, 5)  # assigns 5 to the cell at the first row and first column
-sudoku.assign_value(0, 3, 5)  # assigns 5 where it not valid
+sudoku.solve()
 sudoku.print_grid()
