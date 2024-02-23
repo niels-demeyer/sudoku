@@ -24,4 +24,5 @@ class Sudoku_grid:
 sudoku = Sudoku_grid()
 sudoku.generate()
 sudoku.print_grid()
-sudoku.
+sudoku.assign_value(0, 0, 5)  # assigns 5 to the cell at the first row and first column
+sudoku.print_grid()
