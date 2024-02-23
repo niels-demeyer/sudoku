@@ -7,7 +7,18 @@ class Sudoku_grid:
         self.grid = np.zeros((9, 9), dtype=int)
 
     def print_grid(self):
-        print(self.grid)
+        print("    1 2 3   4 5 6   7 8 9")
+        print("  +-------+-------+-------+")
+        for i in range(9):
+            print(f"{i+1} |", end=" ")
+            for j in range(9):
+                print(self.grid[i][j] if self.grid[i][j] != 0 else ".", end=" ")
+                if (j + 1) % 3 == 0 and j < 8:
+                    print("|", end=" ")
+            print("|")
+            if (i + 1) % 3 == 0 and i < 8:
+                print("  +-------+-------+-------+")
+        print("  +-------+-------+-------+")
 
     def generate(self):
         for i in range(9):
@@ -94,6 +105,4 @@ class Sudoku_grid:
 # Example of a grid
 sudoku = Sudoku_grid()
 sudoku.make_exercise()
-sudoku.print_grid()
 sudoku.play()
-sudoku.print_grid()
