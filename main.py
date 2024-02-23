@@ -1,6 +1,8 @@
 import numpy as np
 import random
 import os
+import tkinter as tk
+from tkinter import messagebox
 
 
 class Sudoku_grid:
