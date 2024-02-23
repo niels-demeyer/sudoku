@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import os
 
 
 class Sudoku_grid:
@@ -7,6 +8,7 @@ class Sudoku_grid:
         self.grid = np.zeros((9, 9), dtype=int)
 
     def print_grid(self):
+        os.system("cls" if os.name == "nt" else "clear")
         print("    1 2 3   4 5 6   7 8 9")
         print("  +-------+-------+-------+")
         for i in range(9):
@@ -14,7 +16,7 @@ class Sudoku_grid:
             for j in range(9):
                 print(self.grid[i][j] if self.grid[i][j] != 0 else ".", end=" ")
                 if (j + 1) % 3 == 0 and j < 8:
-                    print("|", end=" ")
+                    print("| ", end="")
             print("|")
             if (i + 1) % 3 == 0 and i < 8:
                 print("  +-------+-------+-------+")
@@ -73,7 +75,24 @@ class Sudoku_grid:
 
         return False
 
-    def make_exercise(self, num_empty_cells=20):
+    def make_exercise(self):
+        # Ask the user for the difficulty level
+        difficulty = input("Enter difficulty level (beginner, easy, medium, hard): ")
+
+        # Determine the number of empty cells based on the difficulty level
+
+        if difficulty.lower() == "easy":
+            num_empty_cells = 20
+        elif difficulty.lower() == "medium":
+            num_empty_cells = 30
+        elif difficulty.lower() == "hard":
+            num_empty_cells = 40
+        elif difficulty.lower() == "beginner":
+            num_empty_cells = 5
+        else:
+            print("Invalid difficulty level. Defaulting to easy.")
+            num_empty_cells = 20
+
         # First, generate a solved Sudoku grid
         self.generate()
         while not self.solve():
@@ -82,7 +101,7 @@ class Sudoku_grid:
         # Then, remove some numbers from the grid
         for _ in range(num_empty_cells):
             row, col = random.randint(0, 8), random.randint(0, 8)
-            self.grid[row, col] = 0
+            self.grid[row][col] = 0
 
     def play(self):
         while not self.is_solved():
