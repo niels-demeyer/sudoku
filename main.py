@@ -88,7 +88,7 @@ class Sudoku_grid:
         elif difficulty.lower() == "hard":
             num_empty_cells = 40
         elif difficulty.lower() == "beginner":
-            num_empty_cells = 5
+            num_empty_cells = 1
         else:
             print("Invalid difficulty level. Defaulting to easy.")
             num_empty_cells = 20
