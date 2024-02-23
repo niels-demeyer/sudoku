@@ -73,10 +73,27 @@ class Sudoku_grid:
             row, col = random.randint(0, 8), random.randint(0, 8)
             self.grid[row, col] = 0
 
+    def play(self):
+        while not self.is_solved():
+            self.print_grid()
+            row = int(input("Enter the row (1-9): ")) - 1
+            col = int(input("Enter the column (1-9): ")) - 1
+            value = int(input("Enter the value (1-9): "))
+            self.assign_value(row, col, value)
+
+    def is_solved(self):
+        for row in range(9):
+            for col in range(9):
+                if self.grid[row, col] == 0 or not self.is_valid_move(
+                    row, col, self.grid[row, col]
+                ):
+                    return False
+        return True
+
 
 # Example of a grid
 sudoku = Sudoku_grid()
 sudoku.make_exercise()
 sudoku.print_grid()
-sudoku.solve()
+sudoku.play()
 sudoku.print_grid()
