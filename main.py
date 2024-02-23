@@ -54,6 +54,30 @@ class Sudoku_grid:
 
         return True
 
+    def is_valid_sudoku(self):
+        for i in range(9):
+            # Check each row
+            row = self.grid[i]
+            if not self.is_valid_group(row):
+                return False
+
+            # Check each column
+            col = self.grid[:, i]
+            if not self.is_valid_group(col):
+                return False
+
+        # Check each box
+        for i in range(0, 9, 3):
+            for j in range(0, 9, 3):
+                box = self.grid[i : i + 3, j : j + 3].flatten()
+                if not self.is_valid_group(box):
+                    return False
+
+        return True
+
+    def is_valid_group(self, group):
+        return set(group) == set(range(1, 10))
+
     def solve(self, row=0, col=0):
         if col == 9:
             if row == 8:
@@ -106,18 +130,29 @@ class Sudoku_grid:
     def play(self):
         while not self.is_solved():
             self.print_grid()
-            row = int(input("Enter the row (1-9): ")) - 1
-            col = int(input("Enter the column (1-9): ")) - 1
-            value = int(input("Enter the value (1-9): "))
+            try:
+                row = int(input("Enter the row (1-9): ")) - 1
+                col = int(input("Enter the column (1-9): ")) - 1
+                value = int(input("Enter the value (1-9): "))
+            except ValueError:
+                print("Invalid input. Please enter a number between 1 and 9.")
+                continue
             self.assign_value(row, col, value)
+            if self.is_solved():
+                print("Congratulations! You have solved the Sudoku.")
+                break
 
     def is_solved(self):
         for row in range(9):
             for col in range(9):
-                if self.grid[row, col] == 0 or not self.is_valid_move(
-                    row, col, self.grid[row, col]
-                ):
+                # Check if the cell is empty
+                if self.grid[row, col] == 0:
                     return False
+
+        # Check if the current configuration is valid
+        if not self.is_valid_sudoku():
+            return False
+
         return True
 
 
